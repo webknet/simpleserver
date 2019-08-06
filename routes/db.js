@@ -3,7 +3,8 @@ const MongoClient = require('mongodb').MongoClient
 const db = require('../db')
 
 const router = express.Router()
-const url = process.env.DB_CONNECTION 
+const url = process.env.DB_CONNECTION //'mongodb://localhost:27017'
+
 const mongoOptions =  { useNewUrlParser: true }
 
 router.use('/', (req, res) => {

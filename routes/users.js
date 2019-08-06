@@ -11,10 +11,10 @@ const router = express.Router()
 /**
  *  @request.body
  *  {
- *      entity: {
+ *      collection: {
+ *          name: default <users>
  *          action: <insert>, <update>, <delete>, <query>,
  *          query: <One>, <Many>, <ById>,
- *          collection: default <users>
  *          fields: { <field1: 1>, <field2: 1>}
  *      },
  *      value: <object>, <array>, <string>
@@ -25,7 +25,7 @@ const router = express.Router()
 router.post('/', async (req, res) => {
     const db = dbConnection.getDB()
 
-    const { entity: { action, collection, query, fields }, value } = req.body;
+    const { collection: { action, name, query, fields }, value } = req.body;
     
     if (!db) return res.status(500).send('No database connected..')
 
