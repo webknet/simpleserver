@@ -18,7 +18,7 @@ const router = express.Router()
  *  }
  */
 
-router.post('/', (req, res) => {    
+router.post('/', async (req, res) => {    
     const db = dbConnection.getDB()
     const { collection: { action, name: collection, query, fields }, value } = req.body;
     
@@ -73,11 +73,15 @@ router.post('/', (req, res) => {
                         })
                     break;
                 case 'Many':
-                    dbCollection.find(value)
+                    const count = await dbCollection.countDocuments(value.filter || {})
+                    dbCollection.find(value.filter || {})
                             .project(fields)
+                            .sort(value.sort || {})
+                            .skip(value.skip || 0)
+                            .limit(value.limit || 10)
                             .toArray((err, result) => {
                                 assert.deepStrictEqual(null, err)
-                                res.send(result)
+                                res.send({ count, result })
                             })
                     break;
                 case 'ById':
@@ -86,7 +90,13 @@ router.post('/', (req, res) => {
                             callback(result)
                         })
                 break;
-            }
+                case 'Distinct':
+                        dbCollection.distinct(value.field, value.query, value.collation, (err, result) => {
+                            assert.deepStrictEqual(null, err)
+                            res.send(result)
+                        })
+                break;
+            } 
             
             break;
         case 'delete':

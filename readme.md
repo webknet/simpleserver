@@ -9,7 +9,7 @@ For small noSQL data transations, **Simple mongoDB server**, can help you focus 
  - bcrypt
  - jsonwebtoken
 
-## Server (struture) RESTful services
+## Server (structure) RESTful services
 - Create a new database
     - For each application just need to designate a *new database name*
 ```javascript
